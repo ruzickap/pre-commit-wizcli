@@ -48,8 +48,9 @@ fi
 # Add --policies parameter to the hooks args (insert before the final ".")
 yq -i '.repos[].hooks[].args |= (.[:-1] + ["--policies=Default IaC policy,Default malware policy,Default SAST policy (Wiz CI/CD scan),Default secrets policy,Default sensitive data policy"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
 
-# Add --client-id and --client-secret parameters to the hooks args (insert before the final ".")
+# Configure client credentials: add --client-id + --client-secret and remove --use-device-code
 yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id='"${WIZ_CLIENT_ID}"'", "--client-secret='"${WIZ_CLIENT_SECRET}"'"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
+yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
 
 # Initialize git repo and stage config
 cd "${TMPDIR}"
