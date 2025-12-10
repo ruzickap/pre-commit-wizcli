@@ -65,6 +65,6 @@ else
   EXIT_CODE=$?
   echo -e "*******************************************************************************\n\n💥 Pre-commit failed with exit code ${EXIT_CODE}"
   printf "📝 Logs / Traces:\n\n"
-	cat "${LOG_FILE}"
+  cat "${LOG_FILE}"
   exit "${EXIT_CODE}"
 fi
