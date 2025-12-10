@@ -31,10 +31,6 @@ jobs:
           TEST_DIRS=$(find tests -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | jq -Rnc '[inputs]')
           echo "test_dirs=${TEST_DIRS}" >> "${GITHUB_OUTPUT}"
 
-      - name: Replace "rev" in .pre-commit-config.yaml in all tests
-        run: |
-          find tests -name .pre-commit-config.yaml -exec sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" {} \;
-
   pre-commit-test:
     name: pre-commit-test - ${{ matrix.os }} | ${{ matrix.test_dir }}
     needs: discover-tests
@@ -52,11 +48,11 @@ jobs:
           ARCHITECTURE="$(uname -m)"
           curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM,,}-${ARCHITECTURE}"
 
+      - name: Replace "rev" in .pre-commit-config.yaml
+        working-directory: tests/${{ matrix.test_dir }}
+        run: |
+          sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" .pre-commit-config.yaml
+
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
         with:
-          install-only: true
-
-      - name: Run prek
-        run: |
-          cd tests/${{ matrix.test_dir }}
-          prek run --config .pre-commit-config.yaml
+          working-directory: tests/${{ matrix.test_dir }}
