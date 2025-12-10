@@ -31,6 +31,10 @@ jobs:
         run: |
           OPERATING_SYSTEM="$(uname | tr '[:upper:]' '[:lower:]')"
           ARCHITECTURE="$(uname -m)"
+          case "${ARCHITECTURE}" in
+            x86_64)  ARCHITECTURE="amd64" ;;
+            aarch64) ARCHITECTURE="arm64" ;;
+          esac
           curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM}-${ARCHITECTURE}"
           chmod a+x /usr/local/bin/wizcli
 
