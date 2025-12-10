@@ -19,7 +19,7 @@ permissions: read-all
 
 jobs:
   pre-commit-test:
-    name: pre-commit-test - ${{ matrix.os }}
+    timeout-minutes: 5
     strategy:
       matrix:
         os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]

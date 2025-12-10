@@ -21,14 +21,7 @@
   language: system
   entry: wizcli
   args:
-    [
-      "scan",
-      "dir",
-      "--use-device-code",
-      "--tags",
-      'location=pre-commit',
-      ".",
-    ]
+    ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]
 
 - id: wizcli-scan-dir-publish-container
   name: wizcli-scan-dir-publish-container
@@ -37,11 +30,4 @@
   language: docker_image
   entry: --tty wiziocli.azurecr.io/wizcli:latest
   args:
-    [
-      "scan",
-      "dir",
-      "--use-device-code",
-      "--tags",
-      'location=pre-commit',
-      ".",
-    ]
+    ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]

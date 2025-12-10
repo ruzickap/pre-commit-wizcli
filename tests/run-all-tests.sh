@@ -8,17 +8,15 @@ cd "$(git rev-parse --show-toplevel)"
 
 # Check required dependencies
 for CMD in yq git prek; do
-	if ! command -v "${CMD}" &>/dev/null; then
+	if ! command -v "${CMD}" &> /dev/null; then
 		echo "Error: Required command '${CMD}' not found" >&2
 		exit 1
 	fi
 done
 
-prek --version
-
 echo "🧪 Running tests..."
 
 for TEST in tests/*/run.sh; do
 	echo "🧪 Running test: ${TEST}"
-	./${TEST}
+	"./${TEST}"
 done

@@ -63,7 +63,7 @@ if prek run --verbose --log-file "${LOG_FILE}"; then
 else
   EXIT_CODE=$?
   echo -e "*******************************************************************************\n\n💥 Pre-commit failed with exit code ${EXIT_CODE}"
-  echo "📝 Logs / Traces:\n"
+  printf "📝 Logs / Traces:\n\n"
 	cat "${LOG_FILE}"
   exit "${EXIT_CODE}"
 fi
