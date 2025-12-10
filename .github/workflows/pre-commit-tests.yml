@@ -47,6 +47,7 @@ jobs:
           OPERATING_SYSTEM="$(uname)"
           ARCHITECTURE="$(uname -m)"
           curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM,,}-${ARCHITECTURE}"
+          chmod a+x /usr/local/bin/wizcli
 
       - name: Replace "rev" in .pre-commit-config.yaml
         working-directory: tests/${{ matrix.test_dir }}
