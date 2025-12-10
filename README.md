@@ -23,7 +23,7 @@ Depending on which hook you use, you'll need one of the following:
 ## Available Hooks
 
 | Hook ID                             | Runtime | Publishes to Wiz | Description                                        |
-| ----------------------------------- | ------- | ---------------- | -------------------------------------------------- |
+|-------------------------------------|---------|------------------|----------------------------------------------------|
 | `wizcli-scan-dir`                   | Local   | No               | Scan directory for security issues (local only)    |
 | `wizcli-scan-dir-container`         | Docker  | No               | Scan directory using containerized WizCLI          |
 | `wizcli-scan-dir-publish`           | Local   | Yes              | Scan and upload results to Wiz platform            |
@@ -95,7 +95,7 @@ Scans your repository and publishes the results to the Wiz platform with
 metadata tags including location, user, and hostname.
 
 ```bash
-wizcli scan dir --use-device-code --tags 'location=Local,triggered-by="${USER}",hostname="$(hostname)"' .
+wizcli scan dir --use-device-code --tags "location=Local,triggered-by=\"${USER}\",hostname=\"$(hostname)\"" .
 ```
 
 ### wizcli-scan-dir-publish-container
