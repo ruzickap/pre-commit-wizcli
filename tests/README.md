@@ -1,0 +1,1 @@
+# WizCLI pre-commit tests

@@ -26,7 +26,7 @@
       "dir",
       "--use-device-code",
       "--tags",
-      'location=Local,triggered-by="${USER}",hostname="$(hostname)"',
+      'location=pre-commit',
       ".",
     ]
 
@@ -42,6 +42,6 @@
       "dir",
       "--use-device-code",
       "--tags",
-      'location=Local,triggered-by="${USER}",hostname="$(hostname)"',
+      'location=pre-commit',
       ".",
     ]

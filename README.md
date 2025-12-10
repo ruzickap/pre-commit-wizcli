@@ -95,7 +95,7 @@ Scans your repository and publishes the results to the Wiz platform with
 metadata tags including location, user, and hostname.
 
 ```bash
-wizcli scan dir --use-device-code --tags "location=Local,triggered-by=\"${USER}\",hostname=\"$(hostname)\"" .
+wizcli scan dir --use-device-code --tags location=pre-commit .
 ```
 
 ### wizcli-scan-dir-publish-container
