@@ -21,7 +21,7 @@ jobs:
   discover-tests:
     runs-on: ubuntu-24.04-arm
     outputs:
-      test-dirs: ${{ steps.find-dirs.outputs.test_dirs }}
+      test_dirs: ${{ steps.find-dirs.outputs.test_dirs }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
