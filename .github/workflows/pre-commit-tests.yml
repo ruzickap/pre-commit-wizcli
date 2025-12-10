@@ -56,6 +56,6 @@ jobs:
           install-only: true
 
       - name: Run prek
-        working-directory: tests/${{ matrix.test_dir }}
         run: |
+          cd tests/${{ matrix.test_dir }}
           prek run --config .pre-commit-config.yaml
