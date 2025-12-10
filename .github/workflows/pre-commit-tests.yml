@@ -50,10 +50,11 @@ jobs:
           chmod a+x /usr/local/bin/wizcli
 
       - name: Replace "rev" in .pre-commit-config.yaml
-        working-directory: tests/${{ matrix.test_dir }}
+        TEST_DIR: tests/${{ matrix.test_dir }}
         run: |
-          sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" .pre-commit-config.yaml
-          git add .pre-commit-config.yaml
+          sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" "${TEST_DIR}/.pre-commit-config.yaml"
+          git add "${TEST_DIR}/.pre-commit-config.yaml"
+          cp .pre-commit-hooks.yaml "${TEST_DIR}"
 
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
         with:

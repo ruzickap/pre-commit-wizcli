@@ -6,8 +6,7 @@
 ---
 fail_fast: true
 repos:
-  - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+  - repo: local
     hooks:
       - id: wizcli-scan-dir
       - id: wizcli-scan-dir-container
