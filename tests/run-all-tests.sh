@@ -14,6 +14,8 @@ for CMD in yq git prek; do
 	fi
 done
 
+prek --version
+
 echo "🧪 Running tests..."
 
 for TEST in tests/*/run.sh; do
