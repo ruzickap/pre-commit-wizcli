@@ -34,9 +34,10 @@ jobs:
       - name: Replace "rev" in .pre-commit-config.yaml in all tests
         run: |
           find tests -name .pre-commit-config.yaml -exec sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" {} \;
+          cat tests/wizcli-scan-dir/.pre-commit-config.yaml
 
   pre-commit-test:
-    name: pre-commit-test - ${{ matrix.os }}, ${{ matrix.test_dir }}
+    name: pre-commit-test - ${{ matrix.os }} | ${{ matrix.test_dir }}
     needs: discover-tests
     strategy:
       matrix:
@@ -45,6 +46,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Install WizCLI in case pre-commit id doesn't contain "container"
+        run: |
+          if ! grep -q "container" tests/${{ matrix.test_dir }}/.pre-commit-config.yaml; then
+            OPERATING_SYSTEM="$(uname -o)"
+            curl -Lo /user/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM,,}-$(uname -m)"
+          fi
 
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
         with:
