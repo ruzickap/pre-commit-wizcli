@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-      - name: Install WizCLI
+      - name: 🔧 Install WizCLI
         run: |
           OPERATING_SYSTEM="$(uname | tr '[:upper:]' '[:lower:]')"
           ARCHITECTURE="$(uname -m)"
@@ -38,7 +38,7 @@ jobs:
         with:
           install-only: true
 
-      - name: Run tests
+      - name: 🧪 Run tests
         env:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
