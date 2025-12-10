@@ -49,7 +49,8 @@ jobs:
       - name: Install WizCLI
         run: |
           OPERATING_SYSTEM="$(uname)"
-          curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM,,}-$(uname -m)"
+          ARCHITECTURE="$(uname -m)"
+          curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM,,}-${ARCHITECTURE}"
 
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
         with:
