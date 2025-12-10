@@ -1,0 +1,51 @@
+name: pre-commit-tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+      - "!chore/renovate/*"
+    paths:
+      - .pre-commit-hooks.yaml
+      - .github/workflows/pre-commit-tests.yml
+      - tests/**
+
+defaults:
+  run:
+    shell: bash -euxo pipefail {0}
+
+permissions: read-all
+
+jobs:
+  discover-tests:
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      test-dirs: ${{ steps.find-dirs.outputs.test_dirs }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Find test directories
+        id: find-dirs
+        run: |
+          TEST_DIRS=$(find tests -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | jq -Rnc '[inputs]')
+          echo "test_dirs=${TEST_DIRS}" >> "${GITHUB_OUTPUT}"
+
+      - name: Replace "rev" in .pre-commit-config.yaml in all tests
+        run: |
+          find tests -name .pre-commit-config.yaml -exec sed -i "s/rev: .*/rev: ${GITHUB_SHA}/" {} \;
+
+  pre-commit-test:
+    name: pre-commit-test - ${{ matrix.os }}, ${{ matrix.test_dir }}
+    needs: discover-tests
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]
+        test_dir: ${{ fromJson(needs.discover-tests.outputs.test_dirs) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
+        with:
+          working-directory: tests/${{ matrix.test_dir }}
