@@ -1,0 +1,8 @@
+blank_issues_enabled: no
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/ruzickap/pre-commit-wizcli/blob/main/README.md
+    about: Read the documentation before reporting issues
+  - name: 🔒 Security Vulnerabilities
+    url: https://github.com/ruzickap/pre-commit-wizcli/blob/main/SECURITY.md
+    about: Report security vulnerabilities privately following our security policy

@@ -1,0 +1,27 @@
+- id: wizcli-scan-dir
+  name: wizcli-scan-dir
+  description: Use WizCLI to scan your code
+  language: system
+  entry: wizcli
+  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
+
+- id: wizcli-scan-dir-container
+  name: wizcli-scan-dir-container
+  description: Use WizCLI container image to scan your code
+  language: docker_image
+  entry: --tty wiziocli.azurecr.io/wizcli:latest
+  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
+
+- id: wizcli-scan-dir-publish
+  name: wizcli-scan-dir-publish
+  description: Use WizCLI to scan your code
+  language: system
+  entry: wizcli
+  args: ["scan", "dir", "--use-device-code", "--tags", "location=Local,triggered-by=\"${USER}\",hostname=\"$(hostname)\"", "."]
+
+- id: wizcli-scan-dir-publish-container
+  name: wizcli-scan-dir-publish-container
+  description: Use WizCLI container image to check your code
+  language: docker_image
+  entry: --tty wiziocli.azurecr.io/wizcli:latest
+  args: ["scan", "dir", "--use-device-code", "--tags", "location=Local,triggered-by=\"${USER}\",hostname=\"$(hostname)\"", "."]
