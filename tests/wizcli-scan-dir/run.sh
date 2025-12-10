@@ -45,12 +45,12 @@ else
   yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": load("'"${HOOKS_FILE}"'")}]}' > "${TMPDIR}/.pre-commit-config.yaml"
 fi
 
+# Configure client credentials: add --client-id + --client-secret and remove --use-device-code
+yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
+yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
+
 # Add --policies parameter to the hooks args (insert before the final ".")
 yq -i '.repos[].hooks[].args |= (.[:-1] + ["--policies=Default IaC policy,Default malware policy,Default SAST policy (Wiz CI/CD scan),Default secrets policy,Default sensitive data policy"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
-
-# Configure client credentials: add --client-id + --client-secret and remove --use-device-code
-yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id='"${WIZ_CLIENT_ID}"'", "--client-secret='"${WIZ_CLIENT_SECRET}"'"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
-yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
 
 # Initialize git repo and stage config
 cd "${TMPDIR}"
