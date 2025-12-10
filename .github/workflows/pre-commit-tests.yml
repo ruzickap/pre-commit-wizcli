@@ -57,10 +57,9 @@ jobs:
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
         with:
           working-directory: tests/${{ matrix.test_dir }}
-          extra-args: '--verbose --log-file'
+          extra-args: '--verbose --log-file /tmp/prek.log'
 
       - name: Traces
         if: failure()
-        working-directory: tests/${{ matrix.test_dir }}
         run: |
-          cat prek.log
+          cat /tmp/prek.log
