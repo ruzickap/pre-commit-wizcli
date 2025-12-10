@@ -1,0 +1,39 @@
+---
+# GitHub Actions workflow for CodeQL security analysis
+# Performs static analysis to identify security vulnerabilities in GitHub Actions
+# https://docs.github.com/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql
+name: codeql
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    paths:
+      - .github/workflows/*.yml
+  schedule:
+    - cron: 17 10 * * 2
+
+permissions:
+  security-events: write
+  packages: read
+
+jobs:
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Initialize CodeQL
+        # Does not support arm64
+        uses: github/codeql-action/init@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v4.31.7
+        with:
+          languages: actions
+          build-mode: none
+          queries: security-extended
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v4.31.7
+        with:
+          category: "/language:actions"
