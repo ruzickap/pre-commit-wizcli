@@ -11,7 +11,7 @@
   description: Use WizCLI container image to scan your code
   pass_filenames: false
   language: docker_image
-  entry: --tty wiziocli.azurecr.io/wizcli:latest
+  entry: --tty public-registry.wiz.io/wiz-app/wizcli:1
   args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
 
 - id: wizcli-scan-dir-publish
@@ -28,6 +28,6 @@
   description: Use WizCLI container image to scan your code and publish the results
   pass_filenames: false
   language: docker_image
-  entry: --tty wiziocli.azurecr.io/wizcli:latest
+  entry: --tty public-registry.wiz.io/wiz-app/wizcli:1
   args:
     ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]
