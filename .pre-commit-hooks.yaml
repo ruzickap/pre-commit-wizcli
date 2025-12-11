@@ -5,3 +5,17 @@
   language: system
   entry: wizcli scan dir
   args: ["--use-device-code", "--no-publish", "."]
+
+- id: wizcli-scan-dir-secrets
+  name: wizcli-scan-dir-secrets
+  description: Use WizCLI to scan your code for secrets
+  pass_filenames: false
+  language: system
+  entry: wizcli scan dir
+  args:
+    [
+      "--use-device-code",
+      "--no-publish",
+      "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware",
+      ".",
+    ]
