@@ -15,6 +15,5 @@ cat "${TMPDIR}/.pre-commit-config.yaml"
 # Configure client credentials
 configure_client_credentials
 
-
 # Run the test
 run_precommit_test

@@ -7,7 +7,7 @@ SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 # Generate pre-commit config with only wizcli-scan-dir hook and custom arguments
-generate_precommit_config "wizcli-scan-dir" "--no-publish" "--disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,Malware" "--by-policy-hits="DISABLED"" "--policies=Default IaC policy"
+generate_precommit_config "wizcli-scan-dir" "--no-publish" "--disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,Malware" "--by-policy-hits=DISABLED" "--policies=Default IaC policy"
 
 echo "🔍 Pre-commit config:"
 cat "${TMPDIR}/.pre-commit-config.yaml"

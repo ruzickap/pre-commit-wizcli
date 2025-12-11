@@ -25,6 +25,8 @@ Resources:
   # KMS Key for S3 encryption
   S3KMSKey:
     Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Description: KMS key for S3 bucket encryption
       EnableKeyRotation: true
@@ -34,7 +36,7 @@ Resources:
           - Sid: AllowKeyAdministration
             Effect: Allow
             Principal:
-              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
             Action:
               - kms:Create*
               - kms:Describe*
@@ -54,7 +56,7 @@ Resources:
           - Sid: AllowKeyUsage
             Effect: Allow
             Principal:
-              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+              AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root"
             Action:
               - kms:Encrypt
               - kms:Decrypt
@@ -150,8 +152,8 @@ Resources:
             Condition:
               ArnLike:
                 aws:SourceArn:
-                  - !Sub "arn:aws:s3:::${BucketNamePrefix}-${AWS::AccountId}"
-                  - !Sub "arn:aws:s3:::${BucketNamePrefix}-logs-${AWS::AccountId}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${BucketNamePrefix}-${AWS::AccountId}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${BucketNamePrefix}-logs-${AWS::AccountId}"
               StringEquals:
                 aws:SourceAccount: !Ref AWS::AccountId
 
