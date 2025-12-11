@@ -5,6 +5,7 @@
 [![Tests](https://github.com/ruzickap/pre-commit-wizcli/actions/workflows/pre-commit-tests.yml/badge.svg)](https://github.com/ruzickap/pre-commit-wizcli/actions/workflows/pre-commit-tests.yml)
 [![CodeQL](https://github.com/ruzickap/pre-commit-wizcli/actions/workflows/codeql.yml/badge.svg)](https://github.com/ruzickap/pre-commit-wizcli/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ruzickap/pre-commit-wizcli/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ruzickap/pre-commit-wizcli)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11600/badge)](https://www.bestpractices.dev/projects/11600)
 
 A collection of [pre-commit](https://pre-commit.com/) hooks for
 [WizCLI](https://www.wiz.io/lp/wiz-cli) - the Wiz command-line interface for
