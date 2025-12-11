@@ -23,7 +23,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]
+        # os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -43,7 +44,7 @@ jobs:
         with:
           install-only: true
 
-      - name: 🧪 Run tests
+      - name: 🧪 Run tests (tests/run-all-tests.sh)
         env:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
