@@ -4,8 +4,7 @@
   pass_filenames: false
   language: system
   entry: wizcli
-  args:
-    ["scan", "dir", "--use-device-code", "--no-publish", "."]
+  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
 
 - id: wizcli-scan-dir-container
   name: wizcli-scan-dir-container
@@ -13,8 +12,7 @@
   pass_filenames: false
   language: docker_image
   entry: --tty wiziocli.azurecr.io/wizcli:latest
-  args:
-    ["scan", "dir", "--use-device-code", "--no-publish", "."]
+  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
 
 - id: wizcli-scan-dir-publish
   name: wizcli-scan-dir-publish
