@@ -25,9 +25,19 @@ echo "🧪 Setting up test environment: ${TMPDIR}"
 # Generate pre-commit config for a specific hook
 # Arguments:
 #   $1 - hook ID to select from .pre-commit-hooks.yaml
+#   $@ - remaining arguments to add to the hook (optional)
+# Example:
+#   generate_precommit_config "wizcli-scan-dir" "--no-publish" "--policies=Default IaC policy"
 generate_precommit_config() {
   local HOOK_ID="$1"
+  shift
+  local ARGS=("$@")
+
   yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": [load("'"${HOOKS_FILE}"'")[] | select(.id == "'"${HOOK_ID}"'")]}]}' > "${TMPDIR}/.pre-commit-config.yaml"
+
+  for ARG in "${ARGS[@]}"; do
+    ARG="${ARG}" yq -i '((.repos[].hooks[] | select(.id == "'"${HOOK_ID}"'")).args |= (.[:-1] + [strenv(ARG) | . style="double"] + .[-1:]))' "${TMPDIR}/.pre-commit-config.yaml"
+  done
 }
 
 # Configure client credentials in the pre-commit config
@@ -37,21 +47,13 @@ configure_client_credentials() {
   yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
 }
 
-# Add policies to the hook args
-# Arguments:
-#   $1 - comma-separated list of policy names
-add_policies() {
-  local POLICIES="$1"
-  yq -i '.repos[].hooks[].args |= (.[:-1] + ["--policies='"${POLICIES}"'"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
-}
-
 # Initialize git repo and run pre-commit
 run_precommit_test() {
   cd "${TMPDIR}"
   git init --quiet
   git add .pre-commit-config.yaml
 
-  echo -e "🚀 Running pre-commit hooks:\n\n*******************************************************************************"
+  echo -e "\n🚀 Running pre-commit hooks:\n*******************************************************************************"
   if prek run --verbose --log-file "${LOG_FILE}"; then
     echo -e "*******************************************************************************\n\n✅ All hooks passed successfully"
   else
