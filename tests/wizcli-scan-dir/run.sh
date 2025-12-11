@@ -20,7 +20,6 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Create temporary directory for test
 echo "🧪 Setting up test environment: ${TMPDIR}"
 
 # Generate pre-commit config from hooks file
