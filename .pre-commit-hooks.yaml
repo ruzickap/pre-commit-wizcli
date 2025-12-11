@@ -6,28 +6,11 @@
   entry: wizcli
   args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
 
-- id: wizcli-scan-dir-container
-  name: wizcli-scan-dir-container
-  description: Use WizCLI container image to scan your code
-  pass_filenames: false
-  language: docker_image
-  entry: --tty public-registry.wiz.io/wiz-app/wizcli:1
-  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
-
 - id: wizcli-scan-dir-publish
   name: wizcli-scan-dir-publish
   description: Use WizCLI to scan your code and publish the results
   pass_filenames: false
   language: system
   entry: wizcli
-  args:
-    ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]
-
-- id: wizcli-scan-dir-publish-container
-  name: wizcli-scan-dir-publish-container
-  description: Use WizCLI container image to scan your code and publish the results
-  pass_filenames: false
-  language: docker_image
-  entry: --tty public-registry.wiz.io/wiz-app/wizcli:1
   args:
     ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]

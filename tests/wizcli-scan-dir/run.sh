@@ -24,13 +24,7 @@ trap cleanup EXIT
 echo "🧪 Setting up test environment: ${TMPDIR}"
 
 # Generate pre-commit config from hooks file
-# Skip container-based hooks on ARM systems (Docker images may not be available)
-if [[ "$(uname -m)" =~ ^(arm64|aarch64)$ ]]; then
-  echo "⚠️ ARM architecture detected - skipping container-based hooks"
-  yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": [load("'"${HOOKS_FILE}"'")[] | select(.id | test("container") | not)]}]}' > "${TMPDIR}/.pre-commit-config.yaml"
-else
-  yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": load("'"${HOOKS_FILE}"'")}]}' > "${TMPDIR}/.pre-commit-config.yaml"
-fi
+yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": load("'"${HOOKS_FILE}"'")}]}' > "${TMPDIR}/.pre-commit-config.yaml"
 
 # Configure client credentials: add --client-id + --client-secret and remove --use-device-code
 yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"

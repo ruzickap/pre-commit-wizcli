@@ -55,6 +55,3 @@ tests/
    - Uses `set -euo pipefail` for strict error handling
    - Returns exit code 0 on success, non-zero on failure
 3. The main `run-all-tests.sh` will automatically discover and run it
-
-**Note**: On ARM architectures (arm64/aarch64), container-based hooks are
-automatically skipped due to potential Docker image availability issues.
