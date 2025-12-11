@@ -19,16 +19,13 @@ authenticated.
 
 ## Available Hooks
 
-| Hook ID                   | Publishes to Wiz | Description                         |
-|---------------------------|------------------|-------------------------------------|
-| `wizcli-scan-dir`         | No               | Scan directory for security issues  |
-| `wizcli-scan-dir-publish` | Yes          | Scan and upload results to Wiz platform |
+| Hook ID           | Publishes to Wiz | Description                        |
+|-------------------|------------------|------------------------------------|
+| `wizcli-scan-dir` | No               | Scan directory for security issues |
 
 ## Usage
 
 Add the following to your `.pre-commit-config.yaml`:
-
-### Basic Scan
 
 ```yaml
 repos:
@@ -36,16 +33,6 @@ repos:
     rev: v1.0.0
     hooks:
       - id: wizcli-scan-dir
-```
-
-### Scan and Publish Results to Wiz
-
-```yaml
-repos:
-  - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
-    hooks:
-      - id: wizcli-scan-dir-publish
 ```
 
 ## Hook Details
@@ -57,15 +44,6 @@ in the terminal but not published to the Wiz platform.
 
 ```bash
 wizcli scan dir --use-device-code --no-publish .
-```
-
-### wizcli-scan-dir-publish
-
-Scans your repository and publishes the results to the Wiz platform with
-metadata tags including location, user, and hostname.
-
-```bash
-wizcli scan dir --use-device-code --tags location=pre-commit .
 ```
 
 ## Authentication

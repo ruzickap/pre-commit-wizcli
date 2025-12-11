@@ -5,12 +5,3 @@
   language: system
   entry: wizcli
   args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
-
-- id: wizcli-scan-dir-publish
-  name: wizcli-scan-dir-publish
-  description: Use WizCLI to scan your code and publish the results
-  pass_filenames: false
-  language: system
-  entry: wizcli
-  args:
-    ["scan", "dir", "--use-device-code", "--tags", "location=pre-commit", "."]
