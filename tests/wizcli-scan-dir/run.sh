@@ -22,8 +22,8 @@ trap cleanup EXIT
 
 echo "🧪 Setting up test environment: ${TMPDIR}"
 
-# Generate pre-commit config from hooks file
-yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": load("'"${HOOKS_FILE}"'")}]}' > "${TMPDIR}/.pre-commit-config.yaml"
+# Generate pre-commit config with only wizcli-scan-dir hook
+yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": [load("'"${HOOKS_FILE}"'")[] | select(.id == "wizcli-scan-dir")]}]}' > "${TMPDIR}/.pre-commit-config.yaml"
 
 # Configure client credentials: add --client-id + --client-secret and remove --use-device-code
 yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"

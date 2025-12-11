@@ -25,14 +25,12 @@ echo "🧪 Setting up test environment: ${TMPDIR}"
 # Generate pre-commit config with only wizcli-scan-dir-secrets hook
 yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": [load("'"${HOOKS_FILE}"'")[] | select(.id == "wizcli-scan-dir-secrets")]}]}' > "${TMPDIR}/.pre-commit-config.yaml"
 
-# Configure client credentials: add --client-id + --client-secret and remove --use-device-code
-yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
-yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
-
 # Add --policies parameter to the hooks args (insert before the final ".")
 yq -i '.repos[].hooks[].args |= (.[:-1] + ["--policies=Default secrets policy"] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
 
-cat "${TMPDIR}/.pre-commit-config.yaml"
+# Configure client credentials: add --client-id + --client-secret and remove --use-device-code
+yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
+yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
 
 # Initialize git repo and stage config
 cd "${TMPDIR}"
