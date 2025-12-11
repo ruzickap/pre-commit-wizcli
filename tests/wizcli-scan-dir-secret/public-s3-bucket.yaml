@@ -1,3 +1,4 @@
+# kics-scan ignore
 # Deploy with AWS CLI:
 # aws cloudformation deploy --region=us-east-1 --stack-name public-s3-bucket-test --template-file public-s3-bucket.yaml
 
@@ -5,15 +6,22 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Insecure S3 bucket for security scanning tests
 
 Resources:
+  # trivy:ignore:AVD-AWS-0132 Test file for security scanning - intentionally insecure
+  # checkov:skip=CKV_AWS_18:Test file - intentionally insecure
+  # checkov:skip=CKV_AWS_21:Test file - intentionally insecure
+  # checkov:skip=CKV_AWS_53:Test file - intentionally insecure
+  # checkov:skip=CKV_AWS_54:Test file - intentionally insecure
+  # checkov:skip=CKV_AWS_55:Test file - intentionally insecure
+  # checkov:skip=CKV_AWS_56:Test file - intentionally insecure
   PublicS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: my-insecure-public-bucket-123
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
+        BlockPublicAcls: false # trivy:ignore:AVD-AWS-0086
         BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+        IgnorePublicAcls: false # trivy:ignore:AVD-AWS-0091
+        RestrictPublicBuckets: false # trivy:ignore:AVD-AWS-0093
 
   PublicBucketPolicy:
     Type: AWS::S3::BucketPolicy

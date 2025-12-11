@@ -12,4 +12,10 @@
   pass_filenames: false
   language: system
   entry: wizcli scan dir
-  args: ["--use-device-code", "--no-publish", "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware", "."]
+  args:
+    [
+      "--use-device-code",
+      "--no-publish",
+      "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware",
+      ".",
+    ]
