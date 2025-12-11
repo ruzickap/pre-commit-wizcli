@@ -6,11 +6,11 @@ SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 # shellcheck source=tests/lib/common.sh
 source "${SCRIPT_DIR}/../lib/common.sh"
 
-# Generate pre-commit config with only wizcli-scan-dir-secrets hook
-generate_precommit_config "wizcli-scan-dir-secrets"
+# Generate pre-commit config with only wizcli-scan-dir-secrets hook and custom arguments
+generate_precommit_config "wizcli-scan-dir-secrets" "--policies=Default secrets policy"
 
-# Add policies
-add_policies "Default secrets policy"
+echo "🔍 Pre-commit config:"
+cat "${TMPDIR}/.pre-commit-config.yaml"
 
 # Configure client credentials
 configure_client_credentials

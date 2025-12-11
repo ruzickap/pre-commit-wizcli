@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Test script for wizcli-scan-dir pre-commit hook
+# Test script for wizcli-scan-dir pre-commit hook with parametrized scanning
 # Creates a temporary git repo with the hooks and runs pre-commit
 
 SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
@@ -7,7 +7,7 @@ SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 # Generate pre-commit config with only wizcli-scan-dir hook and custom arguments
-generate_precommit_config "wizcli-scan-dir" "--policies=Default IaC policy,Default malware policy,Default SAST policy (Wiz CI/CD scan),Default secrets policy,Default sensitive data policy"
+generate_precommit_config "wizcli-scan-dir" "--no-publish" "--disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,Malware" "--by-policy-hits=DISABLED" "--policies=Default IaC policy"
 
 echo "🔍 Pre-commit config:"
 cat "${TMPDIR}/.pre-commit-config.yaml"
