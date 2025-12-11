@@ -14,26 +14,18 @@ before committing.
 
 ## Prerequisites
 
-Depending on which hook you use, you'll need one of the following:
-
-- **Local hooks**: [WizCLI](https://docs.wiz.io/wiz-docs/docs/wizcli-overview)
-  installed and authenticated
-- **Container hooks**: [Docker](https://www.docker.com/) installed and running
+[WizCLI](https://docs.wiz.io/wiz-docs/docs/wizcli-overview) installed and
+authenticated.
 
 ## Available Hooks
 
-| Hook ID                             | Runtime | Publishes to Wiz | Description                                        |
-|-------------------------------------|---------|------------------|----------------------------------------------------|
-| `wizcli-scan-dir`                   | Local   | No               | Scan directory for security issues (local only)    |
-| `wizcli-scan-dir-container`         | Docker  | No               | Scan directory using containerized WizCLI          |
-| `wizcli-scan-dir-publish`           | Local   | Yes              | Scan and upload results to Wiz platform            |
-| `wizcli-scan-dir-publish-container` | Docker  | Yes              | Scan and upload results using containerized WizCLI |
+| Hook ID           | Publishes to Wiz | Description                        |
+|-------------------|------------------|------------------------------------|
+| `wizcli-scan-dir` | No               | Scan directory for security issues |
 
 ## Usage
 
 Add the following to your `.pre-commit-config.yaml`:
-
-### Basic Scan (Local WizCLI)
 
 ```yaml
 repos:
@@ -41,36 +33,6 @@ repos:
     rev: v1.0.0
     hooks:
       - id: wizcli-scan-dir
-```
-
-### Basic Scan (Container)
-
-```yaml
-repos:
-  - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
-    hooks:
-      - id: wizcli-scan-dir-container
-```
-
-### Scan and Publish Results to Wiz (Local WizCLI)
-
-```yaml
-repos:
-  - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
-    hooks:
-      - id: wizcli-scan-dir-publish
-```
-
-### Scan and Publish Results to Wiz (Container)
-
-```yaml
-repos:
-  - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
-    hooks:
-      - id: wizcli-scan-dir-publish-container
 ```
 
 ## Hook Details
@@ -83,24 +45,6 @@ in the terminal but not published to the Wiz platform.
 ```bash
 wizcli scan dir --use-device-code --no-publish .
 ```
-
-### wizcli-scan-dir-container
-
-Same as `wizcli-scan-dir` but runs WizCLI from a Docker container. Useful when
-you don't want to install WizCLI locally.
-
-### wizcli-scan-dir-publish
-
-Scans your repository and publishes the results to the Wiz platform with
-metadata tags including location, user, and hostname.
-
-```bash
-wizcli scan dir --use-device-code --tags "location=Local,triggered-by=\"${USER}\",hostname=\"$(hostname)\"" .
-```
-
-### wizcli-scan-dir-publish-container
-
-Same as `wizcli-scan-dir-publish` but runs WizCLI from a Docker container.
 
 ## Authentication
 

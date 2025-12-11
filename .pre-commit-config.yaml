@@ -50,3 +50,8 @@ repos:
       - id: check-branch
       - id: check-author-name
       - id: check-author-email
+
+  # - repo: https://github.com/ruzickap/pre-commit-wizcli
+  #   rev: v1.0.0
+  #   hooks:
+  #     - id: wizcli-scan-dir

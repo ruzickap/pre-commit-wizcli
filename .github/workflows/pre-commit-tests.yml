@@ -1,0 +1,52 @@
+name: pre-commit-tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+      - "!chore/renovate/*"
+    paths:
+      - .pre-commit-hooks.yaml
+      - .github/workflows/pre-commit-tests.yml
+      - tests/**
+
+defaults:
+  run:
+    shell: bash -euxo pipefail {0}
+
+permissions: read-all
+
+jobs:
+  pre-commit-test:
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        # os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: 🔧 Install WizCLI
+        run: |
+          OPERATING_SYSTEM="$(uname | tr '[:upper:]' '[:lower:]')"
+          ARCHITECTURE="$(uname -m)"
+          case "${ARCHITECTURE}" in
+            x86_64)  ARCHITECTURE="amd64" ;;
+            aarch64) ARCHITECTURE="arm64" ;;
+          esac
+          curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM}-${ARCHITECTURE}"
+          chmod a+x /usr/local/bin/wizcli
+
+      - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623 # v1.0.11
+        with:
+          install-only: true
+
+      - name: 🧪 Run tests (tests/run-all-tests.sh)
+        env:
+          WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
+          WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
+        run: |
+          ./tests/run-all-tests.sh
