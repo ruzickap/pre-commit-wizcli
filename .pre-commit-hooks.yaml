@@ -3,5 +3,5 @@
   description: Use WizCLI to scan your code
   pass_filenames: false
   language: system
-  entry: wizcli
-  args: ["scan", "dir", "--use-device-code", "--no-publish", "."]
+  entry: wizcli scan dir
+  args: ["--use-device-code", "--no-publish", "."]
