@@ -2,6 +2,9 @@
 # Test script for wizcli-scan-dir pre-commit hook
 # Creates a temporary git repo with the hooks and runs pre-commit
 
+# Make sure you set the WIZ_CLIENT_ID and WIZ_CLIENT_SECRET environment variables
+# before running this script.
+
 set -euo pipefail
 
 # Configuration
@@ -16,22 +19,6 @@ cleanup() {
   fi
 }
 trap cleanup EXIT
-
-# Verify hooks file exists
-if [[ ! -f "${HOOKS_FILE}" ]]; then
-  echo "❌ Error: Hooks file not found: ${HOOKS_FILE}" >&2
-  exit 1
-fi
-
-# Verify required environment variables are set
-if [[ -z "${WIZ_CLIENT_ID:-}" ]]; then
-  echo "❌ Error: WIZ_CLIENT_ID environment variable is not set" >&2
-  exit 1
-fi
-if [[ -z "${WIZ_CLIENT_SECRET:-}" ]]; then
-  echo "❌ Error: WIZ_CLIENT_SECRET environment variable is not set" >&2
-  exit 1
-fi
 
 # Create temporary directory for test
 echo "🧪 Setting up test environment: ${TMPDIR}"
