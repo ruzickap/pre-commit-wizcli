@@ -4,7 +4,7 @@
   pass_filenames: false
   language: system
   entry: wizcli scan dir
-  args: ["--use-device-code", "--no-publish", "."]
+  args: ["--use-device-code", "--no-publish", "--by-policy-hits=AUDIT", "."]
 
 - id: wizcli-scan-dir-secrets
   name: wizcli-scan-dir-secrets
@@ -16,6 +16,7 @@
     [
       "--use-device-code",
       "--no-publish",
+      "--by-policy-hits=AUDIT",
       "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware",
       ".",
     ]
