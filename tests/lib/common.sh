@@ -33,7 +33,7 @@ generate_precommit_config() {
   shift
   local ARGS=("$@")
 
-  yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": [load("'"${HOOKS_FILE}"'")[] | select(.id == "'"${HOOK_ID}"'")]}]}' > "${TMPDIR}/.pre-commit-config.yaml"
+  yq -n '{"fail_fast": true, "repos": [{"repo": "local", "hooks": load("'"${HOOKS_FILE}"'")}]}' > "${TMPDIR}/.pre-commit-config.yaml"
 
   for ARG in "${ARGS[@]}"; do
     ARG="${ARG}" yq -i '((.repos[].hooks[] | select(.id == "'"${HOOK_ID}"'")).args |= (.[:-1] + [strenv(ARG) | . style="double"] + .[-1:]))' "${TMPDIR}/.pre-commit-config.yaml"
@@ -48,13 +48,19 @@ configure_client_credentials() {
 }
 
 # Initialize git repo and run pre-commit
+# Arguments:
+#   $@ - hook IDs to run (optional, runs all hooks if not specified)
+# Example:
+#   run_precommit_test "wizcli-scan-dir" "wizcli-scan-iac"
 run_precommit_test() {
+  local HOOKS=("$@")
+
   cd "${TMPDIR}"
   git init --quiet
   git add .pre-commit-config.yaml
 
   echo -e "\n🚀 Running pre-commit hooks:\n*******************************************************************************"
-  if prek run --verbose --log-file "${LOG_FILE}"; then
+  if prek run --verbose --log-file "${LOG_FILE}" "${HOOKS[@]}"; then
     echo -e "*******************************************************************************\n\n✅ All hooks passed successfully"
   else
     local EXIT_CODE=$?

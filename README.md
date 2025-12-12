@@ -19,7 +19,7 @@ before committing.
 
 ## 📋 Prerequisites
 
-* [WizCLI](https://docs.wiz.io/docs/set-up-wiz-cli#get-wiz-cli)
+* [WizCLI](https://docs.wiz.io/docs/set-up-wiz-cli#get-wiz-cli) (version `1.x`)
 * [pre-commit](https://pre-commit.com/) / [prek](https://prek.j178.dev/)
 
 ## 🪝 Available Hooks
