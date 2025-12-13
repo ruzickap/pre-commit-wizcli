@@ -7,6 +7,12 @@ Description: >
   CloudFormation template to store an SSH private key in AWS Systems Manager
   Parameter Store as a SecureString encrypted using AWS KMS.
 
+Metadata:
+  cfn-lint:
+    config:
+      ignore_checks:
+        - E3030 # SecureString is valid for SSM Parameter but not supported by CFN
+
 Parameters:
   PrivateKey:
     Type: String
@@ -29,6 +35,5 @@ Resources:
     Properties:
       Name: "/dev/ssh/private-key"
       Description: SSH Private Key
-      # cfn-lint: disable=E3030
       Type: SecureString
       Value: !Ref PrivateKey
