@@ -29,5 +29,6 @@ Resources:
     Properties:
       Name: "/dev/ssh/private-key"
       Description: SSH Private Key
-      Type: SecureString # cfn-lint: disable=E3030
+      # cfn-lint: disable=E3030
+      Type: SecureString
       Value: !Ref PrivateKey

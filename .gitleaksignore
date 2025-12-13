@@ -1,2 +1,2 @@
 # Test files with intentionally fake secrets
-tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:private-key:16
+tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:private-key:17
