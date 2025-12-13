@@ -1,0 +1,32 @@
+# Deploy with default values:
+#   aws cloudformation deploy --template-file ssm-parameters.yaml --stack-name my-secrets-stack
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  CloudFormation template to store an SSH private key in AWS Systems Manager
+  Parameter Store as a SecureString encrypted using AWS KMS.
+
+Parameters:
+  PrivateKey:
+    Type: String
+    NoEcho: true
+    Description: SSH Private Key
+    # This is a fake SSH key (never used)
+    Default: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+      QyNTUxOQAAACDTP52GwEvnFDhPv2dok14Xd01Bpw7qd2Wg2ZEkSDENxQAAAKC8mymNvJsp
+      jQAAAAtzc2gtZWQyNTUxOQAAACDTP52GwEvnFDhPv2dok14Xd01Bpw7qd2Wg2ZEkSDENxQ
+      AAAEA0DBLDStDaljS7k4b5/VOX5VEZPk3coRXvkUwr5/jyLNM/nYbAS+cUOE+/Z2iTXhd3
+      TUGnDup3ZaDZkSRIMQ3FAAAAFnlvdXJfZW1haWxAZXhhbXBsZS5jb20BAgMEBQYH
+      -----END OPENSSH PRIVATE KEY-----
+
+Resources:
+  # SSH Private Key parameter
+  PrivateKeyParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: '/dev/ssh/private-key'
+      Description: SSH Private Key
+      Type: SecureString
+      Value: !Ref PrivateKey
