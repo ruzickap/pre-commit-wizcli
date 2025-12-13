@@ -1,0 +1,5 @@
+ignore:
+  secrets:
+    ALL:
+      tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:
+        reason: RISK_ACCEPTED

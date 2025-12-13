@@ -1,0 +1,5 @@
+ignore:
+  secrets:
+    ALL:
+      ssm-parameters.yaml:
+        reason: RISK_ACCEPTED

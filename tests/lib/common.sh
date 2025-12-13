@@ -2,8 +2,8 @@
 # Common functions and setup for pre-commit hook tests
 # Source this file in test scripts to avoid code duplication
 
-# Make sure you set the WIZ_CLIENT_ID and WIZ_CLIENT_SECRET environment variables
-# before running test scripts.
+# Optionally set WIZ_CLIENT_ID and WIZ_CLIENT_SECRET environment variables
+# for non-interactive authentication. Otherwise, --use-device-code is used.
 
 set -euo pipefail
 
@@ -40,11 +40,29 @@ generate_precommit_config() {
   done
 }
 
+# Copy test files and display pre-commit config
+# Arguments:
+#   $1 - source directory containing test files (typically SCRIPT_DIR)
+# Copies all files (except run.sh) from source directory to TMPDIR
+# and displays the generated pre-commit config
+copy_test_files_and_show_config() {
+  local SOURCE_DIR="$1"
+
+  # Copy all files except run.sh from source directory to TMPDIR
+  find "${SOURCE_DIR}" -maxdepth 1 -type f ! -name "run.sh" -exec cp {} "${TMPDIR}/" \;
+
+  echo "🔍 Pre-commit config:"
+  cat "${TMPDIR}/.pre-commit-config.yaml"
+}
+
 # Configure client credentials in the pre-commit config
-# Adds --client-id and --client-secret, removes --use-device-code
+# If WIZ_CLIENT_ID and WIZ_CLIENT_SECRET are set, uses them and removes
+# --use-device-code. Otherwise, keeps --use-device-code for interactive auth.
 configure_client_credentials() {
-  yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
-  yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
+  if [[ -n "${WIZ_CLIENT_ID:-}" && -n "${WIZ_CLIENT_SECRET:-}" ]]; then
+    yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
+    yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
+  fi
 }
 
 # Initialize git repo and run pre-commit
