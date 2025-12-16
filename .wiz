@@ -1,5 +1,6 @@
 ignore:
   secrets:
-    ALL:
+    # PKCS Key - https://app.wiz.io/policies/secret-detection-rules#%7E%28secretDetectionRule%7E%27SECRET-SYSTEM-22%29
+    SECRET-SYSTEM-22:
       tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:
         reason: RISK_ACCEPTED
