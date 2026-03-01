@@ -1,109 +1,170 @@
 # AI Agent Guidelines
 
-## Overview
+## Project Overview
 
-This document provides guidelines and best practices for AI agents working
-on this repository. Follow these standards to ensure consistency, quality,
-and maintainability across all contributions.
+Pre-commit hooks repository for WizCLI security scanning. The
+"product" is `.pre-commit-hooks.yaml` which defines hooks consumers
+install. All source code is Bash shell scripts. No compiled code,
+no package manager, no build step.
 
-## Table of Contents
+## Build / Lint / Test Commands
 
-- [AI Agent Guidelines](#ai-agent-guidelines)
-  - [Overview](#overview)
-  - [Table of Contents](#table-of-contents)
-  - [Markdown Files](#markdown-files)
-    - [Linting and Formatting](#linting-and-formatting)
-    - [Markdown Best Practices](#markdown-best-practices)
-  - [Version Control](#version-control)
-    - [Commit Messages](#commit-messages)
-      - [Format Rules](#format-rules)
-      - [Commit Message Structure](#commit-message-structure)
-        - [Example](#example)
-    - [Branching](#branching)
-    - [Pull Requests](#pull-requests)
-  - [Quality \& Best Practices](#quality--best-practices)
+```bash
+# Run all tests (requires WIZ_CLIENT_ID + WIZ_CLIENT_SECRET env vars)
+./tests/run-all-tests.sh
 
-## Markdown Files
+# Run a single test
+./tests/wizcli-scan-dir/run.sh
+./tests/wizcli-scan-dir-params/run.sh
+./tests/wizcli-scan-dir-secret/run.sh
+./tests/wizcli-scan-dir-secret-wiz-file/run.sh
 
-### Linting and Formatting
+# Pre-commit hooks (lint + format everything)
+pre-commit run --all-files
 
-- **Markdown compliance**: Ensure all Markdown files pass `rumdl` checks
-- **Code blocks**: For `bash`/`shell` code blocks:
-  - Verify they pass `shellcheck` validation
-  - Format with `shfmt` for consistency
+# Individual linters
+shellcheck file.sh
+shfmt --case-indent --indent 2 --space-redirects file.sh
+rumdl file.md
+lychee --config lychee.toml .
+jsonlint --comments file.json
+actionlint
+```
 
-### Markdown Best Practices
+MegaLinter runs all linters in CI (`.mega-linter.yml`). ShellCheck
+excludes SC2317. Markdown uses `rumdl` (not markdownlint). Links use
+`lychee` (not markdown-link-check).
 
-- Use proper heading hierarchy (don't skip levels)
-- Wrap lines at 80 characters for readability
-- Use semantic HTML only when necessary
-- Prefer code fences over inline code for multi-line examples
-- Include language identifiers in code fences
+## Shell Script Style
+
+### Boilerplate
+
+Every shell script must start with:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+```
+
+Use `set -euxo pipefail` only in CI workflows.
+
+### Naming Conventions
+
+- **Variables**: UPPER_SNAKE_CASE with braces: `${MY_VARIABLE}`
+- **Default values**: `${VAR:-}` or `${VAR:-default}`
+- **Functions**: lower_snake_case: `generate_precommit_config()`
+- **Local variables**: Declare with `local` keyword inside functions
+- **Files/directories**: lowercase with hyphens: `run-all-tests.sh`
+
+### Formatting (enforced by `shfmt`)
+
+- 2-space indentation (no tabs)
+- Indent `case` statement bodies
+- Space before redirect operators (`> file`, not `>file`)
+
+### Error Handling
+
+- Send errors to stderr: `echo "Error: message" >&2`
+- Exit with non-zero: `exit 1`
+- Use `trap cleanup EXIT` for temp file cleanup
+- ShellCheck directives: `# shellcheck source=...` for sourced files
+
+### Patterns Used in This Repo
+
+```bash
+# Variable with default (inside a function)
+my_function() {
+  local HOOK_NAME="${1:-}"
+  echo "${HOOK_NAME}"
+}
+
+# Sourcing with shellcheck directive
+# shellcheck source=tests/lib/common.sh
+source "$(dirname "$0")/../lib/common.sh"
+
+# Cleanup trap
+trap 'rm -rf "${TMPDIR}"' EXIT
+```
+
+## Markdown Style
+
+- Wrap lines at 72 characters
+- Proper heading hierarchy (never skip levels)
+- Language identifiers on all code fences (`bash`, `json`, `yaml`)
+- Shell code blocks in Markdown are extracted and validated by
+  ShellCheck + shfmt during CI
+- Use `rumdl` for linting (config: `.rumdl.toml`)
+- Check links with `lychee` (config: `lychee.toml`)
+
+## YAML Style
+
+- 2-space indentation
+- Document start marker `---` on workflow files
+- Use `# keep-sorted start` / `# keep-sorted end` comment blocks
+  to maintain alphabetical ordering where appropriate
+- Heavily comment configuration options
+
+## GitHub Actions Workflows
+
+- **Validate** with `actionlint` after any workflow modification
+- **Pin actions** to full SHA commits, add semver in a comment:
+
+  ```yaml
+  uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+  ```
+
+- **Permissions**: Always set `permissions: read-all` (minimal)
+- **Timeouts**: Always set `timeout-minutes` (5 or 10)
+- **Shell default**: `bash -euxo pipefail {0}`
+
+## Security Scanning
+
+CI runs: Checkov, DevSkim, KICS (fail on HIGH), Trivy (HIGH +
+CRITICAL, ignore unfixed), Gitleaks, Secretlint, CodeQL.
+
+Test fixtures intentionally contain insecure patterns (fake SSH
+keys, public S3 buckets). These are excluded via `.gitleaksignore`,
+`.secretlintignore`, and `.wiz` ignore files. Do not remove these
+exclusions.
 
 ## Version Control
 
 ### Commit Messages
 
-#### Format Rules
+Conventional commit format. Subject line rules:
 
-- **Conventional commit format**: Use standard types (`feat`, `fix`, `docs`,
-  `chore`, `refactor`, `test`, `style`, `perf`, `ci`, `build`, `revert`)
-- **Line limits**: Subject ≤ 80 characters, body lines ≤ 80 characters
-- **Single blank line**: Between subject and body, between body paragraphs
-
-#### Commit Message Structure
-
-- **Subject line**:
-  - Imperative mood (e.g., "add" not "added" or "adds")
-  - Use lower case (except for proper nouns and abbreviations)
-  - No period at the end
-  - Maximum 80 characters
-  - Format: `<type>: <description>`
-
-- **Body** (optional but recommended for non-trivial changes):
-  - Explain **what** changed and **why**
-  - Wrap lines at 80 characters
-  - Use Markdown formatting
-  - Separate paragraphs with blank lines
-  - Reference issues using keywords: `Fixes`, `Closes`, `Resolves`
-
-##### Example
-
-```markdown
-feat: add automated dependency updates
-
-- Implement Dependabot configuration
-- Configure weekly security updates
-- Add auto-merge for patch/minor updates
-
-Resolves: #123
-```
+- Format: `<type>: <description>` (e.g., `feat:`, `fix:`, `docs:`,
+  `chore:`, `refactor:`, `test:`, `ci:`, `build:`, `revert:`)
+- Imperative mood, lowercase, no trailing period
+- Maximum 72 characters (body lines too)
+- Body: explain **what** and **why**, reference issues with
+  `Fixes:`, `Closes:`, `Resolves:`
 
 ### Branching
 
-- **Naming convention**: Follow the
-  [Conventional Branch](https://conventional-branch.github.io/)
-  specification
+Conventional Branch format: `<type>/<description>`
 
-- **Naming guidelines**:
-  - Keep branch names concise and descriptive
-  - Use kebab-case (lower case with hyphens)
-  - Include issue number when applicable: `feat/123-add-feature-name`
+- `feature/` or `feat/`: new features
+- `bugfix/` or `fix/`: bug fixes
+- `hotfix/`: urgent fixes
+- `chore/`: non-code tasks
+- Lowercase, hyphens only, include ticket numbers when applicable
 
 ### Pull Requests
 
-- **Always create draft PR** - Create pull requests as drafts initially
-- **Title format** - Use conventional commit format (`feat: add new feature`)
-- **Description** - Include clear explanation of changes and motivation
-- **Link issues** - Reference related issues using keywords (Fixes, Closes,
-  Resolves)
+- Always create as **draft**
+- Title must follow conventional commit format
+- Include clear description and link related issues
 
-## Quality & Best Practices
+## Quality Checklist
 
-- Pass pre-commit hooks
-- Follow project coding standards
-- Include tests for new functionality
-- Update documentation for user-facing changes
-- Make atomic, focused commits
-- Explain reasoning behind changes
-- Maintain consistent formatting
+Before submitting changes:
+
+- [ ] `pre-commit run --all-files` passes
+- [ ] Shell scripts pass `shellcheck` and `shfmt` checks
+- [ ] Markdown passes `rumdl` and `lychee` checks
+- [ ] Workflow files pass `actionlint` validation
+- [ ] Actions pinned to full SHA with version comment
+- [ ] Tests pass for affected hooks
+- [ ] 2-space indentation, no tabs, no trailing whitespace
+- [ ] Files end with a newline
