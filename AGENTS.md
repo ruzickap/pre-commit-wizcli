@@ -72,8 +72,11 @@ Use `set -euxo pipefail` only in CI workflows.
 ### Patterns Used in This Repo
 
 ```bash
-# Variable with default
-local HOOK_NAME="${1:-}"
+# Variable with default (inside a function)
+my_function() {
+  local HOOK_NAME="${1:-}"
+  echo "${HOOK_NAME}"
+}
 
 # Sourcing with shellcheck directive
 # shellcheck source=tests/lib/common.sh
