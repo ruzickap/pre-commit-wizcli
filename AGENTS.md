@@ -23,11 +23,11 @@ no package manager, no build step.
 pre-commit run --all-files
 
 # Individual linters
-shellcheck <file.sh>
-shfmt --case-indent --indent 2 --space-redirects <file.sh>
-rumdl <file.md>
-lychee --config lychee.toml <files>
-jsonlint --comments <file.json>
+shellcheck file.sh
+shfmt --case-indent --indent 2 --space-redirects file.sh
+rumdl file.md
+lychee --config lychee.toml .
+jsonlint --comments file.json
 actionlint
 ```
 
