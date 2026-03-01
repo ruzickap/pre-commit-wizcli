@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/ruzickap/pre-commit-wizcli/compare/v1.0.0...v1.0.1) (2026-03-01)
+
+
+### Bug Fixes
+
+* update secret detection rules to include SECRET-SYSTEM-22 ([#12](https://github.com/ruzickap/pre-commit-wizcli/issues/12)) ([9a61979](https://github.com/ruzickap/pre-commit-wizcli/commit/9a619794425d1e9248df48b5a2393743a9317eed))
+
 ## 1.0.0 (2025-12-11)
 
 
