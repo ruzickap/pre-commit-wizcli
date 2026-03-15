@@ -88,7 +88,7 @@ trap 'rm -rf "${TMPDIR}"' EXIT
 
 ## Markdown Style
 
-- Wrap lines at 72 characters
+- Wrap lines at 80 characters
 - Proper heading hierarchy (never skip levels)
 - Language identifiers on all code fences (`bash`, `json`, `yaml`)
 - Shell code blocks in Markdown are extracted and validated by
