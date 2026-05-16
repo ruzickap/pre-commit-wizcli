@@ -119,8 +119,8 @@ trap 'rm -rf "${TMPDIR}"' EXIT
 
 ## Security Scanning
 
-CI runs: Checkov, DevSkim, KICS (fail on HIGH), Trivy (HIGH +
-CRITICAL, ignore unfixed), Gitleaks, Secretlint, CodeQL.
+CI runs: Checkov, DevSkim, Trivy (HIGH + CRITICAL, ignore unfixed),
+Gitleaks, Secretlint, CodeQL.
 
 Test fixtures intentionally contain insecure patterns (fake SSH
 keys, public S3 buckets). These are excluded via `.gitleaksignore`,

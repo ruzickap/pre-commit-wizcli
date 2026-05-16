@@ -1,4 +1,3 @@
-# kics-scan ignore
 # Deploy with AWS CLI:
 # aws cloudformation deploy --region=us-east-1 --stack-name public-s3-bucket-test --template-file public-s3-bucket.yaml
 

@@ -96,7 +96,6 @@ Resources:
 
   # Logging bucket for access logs (logs to itself to satisfy security scanners)
   LoggingBucket:
-    # kics-scan ignore-line
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "${BucketNamePrefix}-logs-${AWS::AccountId}"

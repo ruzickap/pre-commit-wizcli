@@ -1,4 +1,3 @@
-# kics-scan ignore
 # Deploy with default values:
 #   aws cloudformation deploy --template-file ssm-parameters.yaml --stack-name my-secrets-stack
 
