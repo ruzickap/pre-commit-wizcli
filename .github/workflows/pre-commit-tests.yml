@@ -26,7 +26,7 @@ jobs:
         os: [macos-latest, ubuntu-24.04-arm, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
 
@@ -41,7 +41,7 @@ jobs:
           curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM}-${ARCHITECTURE}"
           chmod a+x /usr/local/bin/wizcli
 
-      - uses: j178/prek-action@6ad80277337ad479fe43bd70701c3f7f8aa74db3 # v2.0.3
+      - uses: j178/prek-action@bdca6f102f98e2b4c7029491a53dfd366469e33d # v2.0.4
         with:
           install-only: true
 
