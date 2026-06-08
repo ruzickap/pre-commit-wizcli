@@ -30,24 +30,11 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: 🔧 Install WizCLI
-        run: |
-          OPERATING_SYSTEM="$(uname | tr '[:upper:]' '[:lower:]')"
-          ARCHITECTURE="$(uname -m)"
-          case "${ARCHITECTURE}" in
-            x86_64)  ARCHITECTURE="amd64" ;;
-            aarch64) ARCHITECTURE="arm64" ;;
-          esac
-          curl -Lo /usr/local/bin/wizcli "https://downloads.wiz.io/v1/wizcli/latest/wizcli-${OPERATING_SYSTEM}-${ARCHITECTURE}"
-          chmod a+x /usr/local/bin/wizcli
-
-      - uses: j178/prek-action@bdca6f102f98e2b4c7029491a53dfd366469e33d # v2.0.4
-        with:
-          install-only: true
-
-      - name: 🧪 Run tests (tests/run-all-tests.sh)
+      - name: 🔧 Install dependencies and run tests (tests/run-all-tests.sh)
         env:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install prek wizcli
           ./tests/run-all-tests.sh
