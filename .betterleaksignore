@@ -1,2 +1,6 @@
-# Test files with intentionally fake secrets
+# Test files with intentionally fake secrets.
+# Betterleaks anchors the private-key match on the "-----BEGIN-----" line
+# (line 22); the line 23 entry is kept for backward compatibility with the
+# gitleaks fingerprint format.
+tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:private-key:22
 tests/wizcli-scan-dir-secret-wiz-file/ssm-parameters.yaml:private-key:23
