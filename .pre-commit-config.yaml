@@ -38,10 +38,10 @@ repos:
               }
             }
 
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.1
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: v1.6.0
     hooks:
-      - id: gitleaks
+      - id: betterleaks
 
   - repo: https://github.com/commit-check/commit-check
     rev: v2.7.0
