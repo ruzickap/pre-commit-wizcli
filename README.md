@@ -36,6 +36,7 @@ Add the following to your `.pre-commit-config.yaml`:
 ### Scan all issues (recommended)
 
 <!-- x-release-please-start-version -->
+
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
@@ -43,6 +44,7 @@ repos:
     hooks:
       - id: wizcli-scan-dir
 ```
+
 <!-- x-release-please-end -->
 
 ### Secret scanning only
@@ -50,6 +52,7 @@ repos:
 Use this hook for faster scans focused exclusively on detecting secrets.
 
 <!-- x-release-please-start-version -->
+
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
@@ -57,6 +60,7 @@ repos:
     hooks:
       - id: wizcli-scan-dir-secrets
 ```
+
 <!-- x-release-please-end -->
 
 ### Parametrized scanning
@@ -68,6 +72,7 @@ wizcli scan dir --use-device-code --no-publish --disabled-scanners=Misconfigurat
 ```
 
 <!-- x-release-please-start-version -->
+
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
@@ -80,6 +85,7 @@ repos:
           - --disabled-scanners=Misconfiguration
           - .
 ```
+
 <!-- x-release-please-end -->
 
 ## 📝 Hook Details
