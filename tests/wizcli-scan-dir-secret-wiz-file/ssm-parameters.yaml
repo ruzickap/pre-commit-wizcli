@@ -18,7 +18,6 @@ Parameters:
     NoEcho: true
     Description: SSH Private Key
     # This is a fake SSH key (never used)
-    # kingfisher:ignore - intentional test fixture for wizcli scanning
     Default: |
       -----BEGIN OPENSSH PRIVATE KEY-----
       b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -27,6 +26,7 @@ Parameters:
       AAAEA0DBLDStDaljS7k4b5/VOX5VEZPk3coRXvkUwr5/jyLNM/nYbAS+cUOE+/Z2iTXhd3
       TUGnDup3ZaDZkSRIMQ3FAAAAFnlvdXJfZW1haWxAZXhhbXBsZS5jb20BAgMEBQYH
       -----END OPENSSH PRIVATE KEY-----
+    # kingfisher:ignore - intentional test fixture for wizcli scanning
 
 Resources:
   # SSH Private Key parameter
