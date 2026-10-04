@@ -44,7 +44,7 @@ repos:
       - id: betterleaks
 
   - repo: https://github.com/commit-check/commit-check
-    rev: v2.7.0
+    rev: v2.7.1
     hooks:
       - id: check-message
       - id: check-branch
