@@ -2,6 +2,7 @@
   name: wizcli-scan-dir
   description: Use WizCLI to scan your code
   pass_filenames: false
+  stages: [pre-commit, pre-merge-commit, pre-push, manual]
   language: system
   entry: wizcli scan dir
   args: ["--use-device-code", "--no-publish", "."]
@@ -10,12 +11,14 @@
   name: wizcli-scan-dir-secrets
   description: Use WizCLI to scan your code for secrets
   pass_filenames: false
+  stages: [pre-commit, pre-merge-commit, pre-push, manual]
   language: system
   entry: wizcli scan dir
+  # wizcli has no allow-list flag: disable every scanner except Secret
   args:
     [
       "--use-device-code",
       "--no-publish",
-      "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware",
+      "--disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,AISecurity,Malware",
       ".",
     ]
