@@ -56,7 +56,7 @@ tests/
 │   └── run.sh                  # Secrets-only scan test
 └── wizcli-scan-dir-secret-wiz-file/
     ├── .wiz                    # Ignore rule for the fake key
-    ├── run.sh                  # Must block without .wiz, pass with it
+    ├── run.sh                  # Must report the key without .wiz, pass with it
     └── ssm-parameters.yaml     # Fake SSH private key
 ```
 
