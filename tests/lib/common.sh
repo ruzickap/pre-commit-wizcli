@@ -55,13 +55,12 @@ copy_test_files_and_show_config() {
   cat "${TMPDIR}/.pre-commit-config.yaml"
 }
 
-# Configure client credentials in the pre-commit config
-# If WIZ_CLIENT_ID and WIZ_CLIENT_SECRET are set, uses them and removes
-# --use-device-code. Otherwise, keeps --use-device-code for interactive auth.
+# If WIZ_CLIENT_ID and WIZ_CLIENT_SECRET are set, remove --use-device-code so
+# wizcli reads them from the environment (not args: prek logs the command).
+# Otherwise, keep --use-device-code for interactive auth.
 configure_client_credentials() {
   if [[ -n "${WIZ_CLIENT_ID:-}" && -n "${WIZ_CLIENT_SECRET:-}" ]]; then
     yq -i '.repos[].hooks[].args |= map(select(. != "--use-device-code"))' "${TMPDIR}/.pre-commit-config.yaml"
-    yq -i '.repos[].hooks[].args |= (.[:-1] + ["--client-id=" + strenv(WIZ_CLIENT_ID), "--client-secret=" + strenv(WIZ_CLIENT_SECRET)] + .[-1:])' "${TMPDIR}/.pre-commit-config.yaml"
   fi
 }
 
@@ -69,7 +68,7 @@ configure_client_credentials() {
 # Arguments:
 #   $@ - hook IDs to run (optional, runs all hooks if not specified)
 # Example:
-#   run_precommit_test "wizcli-scan-dir" "wizcli-scan-iac"
+#   run_precommit_test "wizcli-scan-dir" "wizcli-scan-dir-secrets"
 run_precommit_test() {
   local HOOKS=("$@")
 

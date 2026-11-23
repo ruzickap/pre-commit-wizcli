@@ -16,5 +16,14 @@ copy_test_files_and_show_config "${SCRIPT_DIR}"
 # Configure client credentials
 configure_client_credentials
 
+# Without the .wiz ignore file the fake key must block the commit
+echo "🧪 Expecting ${HOOK_NAME} to block the fake key (no .wiz file)"
+rm "${TMPDIR}/.wiz"
+if (run_precommit_test "${HOOK_NAME}"); then
+  echo "❌ ${HOOK_NAME} did not block the fake private key" >&2
+  exit 1
+fi
+cp "${SCRIPT_DIR}/.wiz" "${TMPDIR}/"
+
 # Run the test with specific hook
 run_precommit_test "${HOOK_NAME}"

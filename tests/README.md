@@ -6,7 +6,8 @@ This directory contains test scripts for validating the WizCLI pre-commit hooks.
 
 ### 🔐 Environment Variables
 
-The following environment variables must be set before running tests:
+The following environment variables must be set before running tests, unless
+you are already logged in to WizCLI (`~/.wiz/auth.json` exists):
 
 | Variable            | Description                          |
 |---------------------|--------------------------------------|
@@ -17,6 +18,7 @@ The following environment variables must be set before running tests:
 
 - **yq** — YAML processor for generating test configurations
 - **prek** — Pre-commit hook runner
+- **wizcli** — Wiz CLI that the hooks run
 
 ## ▶️ Running Tests
 
@@ -49,9 +51,13 @@ tests/
 ├── wizcli-scan-dir-params/
 │   ├── private-s3-bucket.yaml  # Test fixture (should pass)
 │   └── run.sh                  # Parametrized scan test
-└── wizcli-scan-dir-secret/
-    ├── public-s3-bucket.yaml   # Test fixture
-    └── run.sh                  # Secret detection test
+├── wizcli-scan-dir-secret/
+│   ├── public-s3-bucket.yaml   # Insecure IaC the secrets hook must ignore
+│   └── run.sh                  # Secrets-only scan test
+└── wizcli-scan-dir-secret-wiz-file/
+    ├── .wiz                    # Ignore rule for the fake key
+    ├── run.sh                  # Must block without .wiz, pass with it
+    └── ssm-parameters.yaml     # Fake SSH private key
 ```
 
 ### ➕ Adding New Tests

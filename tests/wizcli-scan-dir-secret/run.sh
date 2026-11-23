@@ -8,7 +8,7 @@ HOOK_NAME="wizcli-scan-dir-secrets"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 # Generate pre-commit config with only wizcli-scan-dir-secrets hook and custom arguments
-generate_precommit_config "${HOOK_NAME}" "--policies=Default secrets policy"
+generate_precommit_config "${HOOK_NAME}" "--policies=Default secrets policy,Default IaC policy"
 
 # Copy test files and display pre-commit config
 copy_test_files_and_show_config "${SCRIPT_DIR}"
