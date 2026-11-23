@@ -71,7 +71,6 @@ configure_client_credentials() {
 #   run_precommit_test "wizcli-scan-dir" "wizcli-scan-dir-secrets"
 run_precommit_test() {
   local HOOKS=("$@")
-  local OUTPUT
 
   cd "${TMPDIR}"
   git init --quiet
@@ -79,7 +78,8 @@ run_precommit_test() {
 
   echo -e "\n🚀 Running pre-commit hooks:\n*******************************************************************************"
   # An audit-only policy hit (WARN_BY_POLICY) exits 0, so fail on any policy hit
-  if OUTPUT=$(prek run --verbose --log-file "${LOG_FILE}" "${HOOKS[@]}" | tee /dev/stderr) && ! grep -q -E '(WARN|FAIL(ED)?)_BY_POLICY' <<< "${OUTPUT}"; then
+  # PRECOMMIT_OUTPUT stays set for extra checks in the test scripts
+  if PRECOMMIT_OUTPUT=$(prek run --verbose --log-file "${LOG_FILE}" "${HOOKS[@]}" | tee /dev/stderr) && ! grep -q -E '(WARN|FAIL(ED)?)_BY_POLICY' <<< "${PRECOMMIT_OUTPUT}"; then
     echo -e "*******************************************************************************\n\n✅ All hooks passed successfully"
   else
     local EXIT_CODE=$?
