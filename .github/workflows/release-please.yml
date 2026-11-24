@@ -21,7 +21,5 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      # Repo-specific (kept by multi-gitter): without release-type the action
-      # reads release-please-config.json, which also bumps README.md versions
       - name: Create release with Release Please
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
