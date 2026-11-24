@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/ruzickap/pre-commit-wizcli/compare/v1.0.0...v1.0.1) (2026-11-24)
+
+
+### Bug Fixes
+
+* disable AISecurity in secrets hook and apply audit fixes ([#40](https://github.com/ruzickap/pre-commit-wizcli/issues/40)) ([915686e](https://github.com/ruzickap/pre-commit-wizcli/commit/915686ea1eb519bb26f7fa4196852bf6dd49cef7))
+* place kingfisher ignore after test fixture ([#36](https://github.com/ruzickap/pre-commit-wizcli/issues/36)) ([ca0ea93](https://github.com/ruzickap/pre-commit-wizcli/commit/ca0ea938a3b06126638d85272e3c1369b80d2b12))
+* update secret detection rules to include SECRET-SYSTEM-22 ([#12](https://github.com/ruzickap/pre-commit-wizcli/issues/12)) ([9a61979](https://github.com/ruzickap/pre-commit-wizcli/commit/9a619794425d1e9248df48b5a2393743a9317eed))
+
 ## 1.0.0 (2025-12-11)
 
 
