@@ -10,7 +10,8 @@ no package manager, no build step.
 ## Build / Lint / Test Commands
 
 ```bash
-# Run all tests (requires WIZ_CLIENT_ID + WIZ_CLIENT_SECRET env vars)
+# Run all tests (requires WIZ_CLIENT_ID + WIZ_CLIENT_SECRET env vars
+# or an existing WizCLI login in ~/.wiz/auth.json)
 ./tests/run-all-tests.sh
 
 # Run a single test
@@ -107,6 +108,7 @@ trap 'rm -rf "${TMPDIR}"' EXIT
 ## GitHub Actions Workflows
 
 - **Validate** with `actionlint` after any workflow modification
+
 - **Pin actions** to full SHA commits, add semver in a comment:
 
   ```yaml
@@ -114,7 +116,9 @@ trap 'rm -rf "${TMPDIR}"' EXIT
   ```
 
 - **Permissions**: Always set `permissions: read-all` (minimal)
+
 - **Timeouts**: Always set `timeout-minutes` (5 or 10)
+
 - **Shell default**: `bash -euxo pipefail {0}`
 
 ## Security Scanning
@@ -155,6 +159,14 @@ Conventional Branch format: `<type>/<description>`
 - Always create as **draft**
 - Title must follow conventional commit format
 - Include clear description and link related issues
+
+### Releases
+
+- release-please reads `release-please-config.json`: it updates
+  `CHANGELOG.md` and the versions inside the `x-release-please-*` markers
+  in `README.md`, so keep every README `rev:` inside those markers
+- `.github/workflows/release-please.yml` differs from gh-repo-defaults (no
+  `release-type` input); multi-gitter keeps this repo's copy
 
 ## Quality Checklist
 

@@ -8,7 +8,7 @@ HOOK_NAME="wizcli-scan-dir"
 source "${SCRIPT_DIR}/../lib/common.sh"
 
 # Generate pre-commit config with only wizcli-scan-dir hook and custom arguments
-generate_precommit_config "${HOOK_NAME}" "--no-publish" "--disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,Malware" "--by-policy-hits=DISABLED" "--policies=Default IaC policy"
+generate_precommit_config "${HOOK_NAME}" "--disabled-scanners=Vulnerability,Secret,SensitiveData,SoftwareSupplyChain,AIModels,SAST,AISecurity,Malware" "--by-policy-hits=DISABLED" "--policies=Default IaC policy"
 
 # Copy test files and display pre-commit config
 copy_test_files_and_show_config "${SCRIPT_DIR}"

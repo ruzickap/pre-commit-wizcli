@@ -20,7 +20,7 @@ before committing.
 ## 📋 Prerequisites
 
 * [WizCLI](https://docs.wiz.io/docs/set-up-wiz-cli#get-wiz-cli) (version `1.x`)
-* [pre-commit](https://pre-commit.com/) / [prek](https://prek.j178.dev/)
+* [pre-commit](https://pre-commit.com/) `3.2+` / [prek](https://prek.j178.dev/)
 
 ## 🪝 Available Hooks
 
@@ -65,7 +65,9 @@ repos:
 
 ### Parametrized scanning
 
-Customize the scan by passing additional arguments. The final command will be:
+Customize the scan with `args`. Your `args` replace the hook defaults, so
+repeat the ones you need (`--use-device-code`, `--no-publish`) and keep `.`
+last. The final command will be:
 
 ```bash
 wizcli scan dir --use-device-code --no-publish --disabled-scanners=Misconfiguration .
@@ -103,12 +105,12 @@ wizcli scan dir --use-device-code --no-publish .
 
 Scans your repository for secrets only using locally installed WizCLI. All other
 scanners (Vulnerability, SensitiveData, Misconfiguration, SoftwareSupplyChain,
-AIModels, SAST, Malware) are disabled. Results are displayed in the terminal but
-not published to the Wiz platform.
+AIModels, SAST, AISecurity, Malware) are disabled. Results are displayed in the
+terminal but not published to the Wiz platform.
 
 ```bash
 wizcli scan dir --use-device-code --no-publish \
-  --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,Malware .
+  --disabled-scanners=Vulnerability,SensitiveData,Misconfiguration,SoftwareSupplyChain,AIModels,SAST,AISecurity,Malware .
 ```
 
 ## 🔓 Authentication
@@ -118,6 +120,29 @@ prompted to authenticate using the device code flow.
 
 For more information on WizCLI authentication, see the
 [WizCLI documentation](https://docs.wiz.io/wiz-docs/docs/wizcli-overview).
+
+### CI and service accounts
+
+`--use-device-code` makes WizCLI ignore `WIZ_CLIENT_ID` and
+`WIZ_CLIENT_SECRET`, so in CI the hooks would wait for a browser login. Set
+both variables and override `args` without `--use-device-code`:
+
+<!-- x-release-please-start-version -->
+
+```yaml
+repos:
+  - repo: https://github.com/ruzickap/pre-commit-wizcli
+    rev: v1.0.0
+    hooks:
+      - id: wizcli-scan-dir
+        args:
+          - --no-publish
+          - .
+```
+
+<!-- x-release-please-end -->
+
+For `wizcli-scan-dir-secrets`, also keep its `--disabled-scanners=...` argument.
 
 ## 📄 License
 

@@ -18,3 +18,9 @@ configure_client_credentials
 
 # Run the test with specific hook
 run_precommit_test "${HOOK_NAME}"
+
+# The secrets-only hook must not scan the insecure bucket for misconfigurations
+if grep -q -E 'IaC: [0-9]+ result' <<< "${PRECOMMIT_OUTPUT}"; then
+  echo "❌ ${HOOK_NAME} reported IaC results" >&2
+  exit 1
+fi

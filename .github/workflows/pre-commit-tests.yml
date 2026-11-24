@@ -5,11 +5,13 @@ on:
   push:
     branches-ignore:
       - main
-      - "!chore/renovate/*"
     paths:
       - .pre-commit-hooks.yaml
       - .github/workflows/pre-commit-tests.yml
       - tests/**
+  # Weekly run catches breaking changes in the latest wizcli
+  schedule:
+    - cron: 27 6 * * 1
 
 defaults:
   run:
@@ -35,6 +37,6 @@ jobs:
           WIZ_CLIENT_ID: ${{ secrets.WIZ_CLIENT_ID }}
           WIZ_CLIENT_SECRET: ${{ secrets.WIZ_CLIENT_SECRET }}
         run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          command -v brew > /dev/null || eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install prek wizcli
           ./tests/run-all-tests.sh

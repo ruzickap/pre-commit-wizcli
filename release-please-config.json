@@ -1,0 +1,9 @@
+{
+  "release-type": "simple",
+  "include-component-in-tag": false,
+  "packages": {
+    ".": {
+      "extra-files": ["README.md"]
+    }
+  }
+}
