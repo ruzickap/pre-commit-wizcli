@@ -40,7 +40,7 @@ Add the following to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: wizcli-scan-dir
 ```
@@ -56,7 +56,7 @@ Use this hook for faster scans focused exclusively on detecting secrets.
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: wizcli-scan-dir-secrets
 ```
@@ -78,7 +78,7 @@ wizcli scan dir --use-device-code --no-publish --disabled-scanners=Misconfigurat
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: wizcli-scan-dir
         args:
@@ -132,7 +132,7 @@ both variables and override `args` without `--use-device-code`:
 ```yaml
 repos:
   - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: wizcli-scan-dir
         args:
