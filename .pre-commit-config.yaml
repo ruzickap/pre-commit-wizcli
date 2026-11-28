@@ -52,6 +52,6 @@ repos:
       - id: check-author-email
 
   - repo: https://github.com/ruzickap/pre-commit-wizcli
-    rev: v1.0.0
+    rev: v1.0.1
     hooks:
       - id: wizcli-scan-dir
